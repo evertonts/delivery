@@ -2,7 +2,8 @@ class MapsController < ApplicationController
   rescue_from ActionController::ParameterMissing, with: :parameters_missing
   
   def create
-    map = Map.new(map_params)
+    routes = converter.convert(params.require(:routes))
+    map = Map.new(routes: routes, name: params.require(:name))
     if map.valid?
       map.save
       head :created
@@ -13,11 +14,11 @@ class MapsController < ApplicationController
   
   private
   
-  def map_params
-    params.require(:map).permit(:name, routes: [])
-  end
-  
   def parameters_missing
     render json: { message: 'Invalid parameters' }, status: :bad_request
+  end
+  
+  def converter
+    @converter ||= RoutesConverter.instance
   end
 end

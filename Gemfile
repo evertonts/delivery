@@ -29,6 +29,7 @@ gem 'spring', group: :development
 group :development, :test do
   gem 'rspec-rails', '~> 3.1.0'
   gem 'shoulda-matchers', require: false
+  gem 'rspec-collection_matchers'
 end
 
 # Use ActiveModel has_secure_password
